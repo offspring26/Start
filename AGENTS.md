@@ -156,10 +156,14 @@ File: `.github/workflows/cron-delay-monitor.yml`
 
 ## 6. Frontend Visualization Conventions
 
-- **Visual Element**: **Horizontal Bar Graph** (`HorizontalBarChart.tsx`).
-  - Bar widths scale proportionally relative to maximum value in active view.
-  - An average indicator dashed line provides immediate benchmark context.
-  - Interactive hover state displays detailed scheduled time, start time, and delta.
+- **Visual Element**: **Vertical Column Bars** (`ColumnBarChart.tsx`, with `HorizontalBarChart.tsx` compatibility).
+  - Column heights scale proportionally relative to maximum value in active view.
+  - Horizontal benchmark dashed line displays section and group averages.
+  - Interactive hover state displays detailed scheduled time, start time, delay duration, and delta.
+- **Monthly Overview**: (`MonthlyOverview.tsx`)
+  - Aggregates multi-month historical trends and provides day-by-day drill-downs for any selected month.
+- **Theme Support**:
+  - Class-based Tailwind dark mode (`dark:`) supporting both Light and Dark modes with instant toggle and `localStorage` persistence.
 - **Latency Thresholds**:
   - `≤ 3.0 min`: Emerald (Optimal / very fast queue)
   - `3.1 - 7.0 min`: Indigo / Blue (Standard GitHub queue wait)

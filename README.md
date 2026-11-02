@@ -17,9 +17,9 @@ Each morning at **03:14 AM UTC**, a GitHub Actions cron job triggers a script th
 2. Appends the run metrics into an in-repo **SQLite database** (`data/delays.db`).
 3. Exports aggregated snapshot data to JSON (`data/delays.json`).
 4. Automatically commits the updated database and data snapshot back to the repository.
-5. Builds and deploys an interactive **Vite web dashboard** to GitHub Pages with **horizontal bar graphs** displaying:
-   - **Daily startup delays for the last week**
-   - **Average startup delay for the last month** (with weekly cohort breakdowns)
+5. Builds and deploys an interactive **Vite web dashboard** with **vertical column bars** and light/dark theme support displaying:
+   - **Daily startup delays for the last week** (vertical columns)
+   - **Monthly Performance Overview** (multi-month trend comparison and day-by-day drill-downs)
    - **Average startup delay of the last years** (annual comparative trends)
    - Searchable execution history table and KPI metric cards
 
@@ -82,14 +82,14 @@ Generates static assets in `frontend/dist/`.
 
 ## 📊 Visualizations
 
-The dashboard is built around responsive **horizontal bar graphs**:
+The dashboard is built around responsive **vertical column bar charts** with seamless **Light and Dark mode** support:
 
-- **Last Week View**: Individual bars for each day displaying runner latency in minutes and seconds, color-coded by queue health:
+- **Last Week View**: Individual vertical columns for each day displaying runner latency in minutes and hours, color-coded by queue health:
   - 🟢 **Fast / Optimal**: `< 3 min`
   - 🔵 **Normal Queue**: `3 – 7 min`
   - 🟡 **Queue Congestion**: `7 – 12 min`
   - 🔴 **High Delay**: `> 12 min`
-- **Last Month Average**: Compares the 30-day average against 4 weekly cohorts.
+- **Monthly Overview**: Interactive monthly analytics to compare month-over-month averages or drill down into day-by-day scheduler performance for any selected month.
 - **Multi-Year Comparison**: Compares average queue latency across years (e.g., 2024, 2025, 2026).
 - **Recent Execution History**: Searchable table with scheduled time, actual start, delay, and GitHub run IDs.
 

@@ -33,6 +33,17 @@ export interface DelayDataset {
   runs: CronRun[];
 }
 
+export interface MonthSummary {
+  monthKey: string; // "2026-10"
+  monthName: string; // "October 2026"
+  shortName: string; // "Oct '26"
+  avgDelayMinutes: number;
+  minDelayMinutes: number;
+  maxDelayMinutes: number;
+  runCount: number;
+  runs: CronRun[];
+}
+
 export interface BarItem {
   id: string | number;
   label: string;

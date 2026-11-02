@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Verified stable GitHub Pages deployment pipeline and GitHub Actions automation.
 
 ### Added
+- **Light & Dark Mode Support**:
+  - Full support for both light and dark modes with instantaneous theme toggle and `localStorage` persistence.
+- **Monthly Overview Analytics (`MonthlyOverview.tsx`)**:
+  - Multi-month trend comparison across all recorded calendar months (September, October, November 2026).
+  - Day-by-day drill-down view displaying every individual daily execution in any selected month.
+  - Dedicated monthly KPI cards: Month Average Delay, Recorded Executions, Fastest Run, and Slowest Run.
+- **Vertical Column Bar Visualization (`ColumnBarChart.tsx`)**:
+  - Adjusted visualizations from horizontal bars to responsive vertical column bars with baseline scaling, threshold color gradients, hover tooltips, and horizontal benchmark average lines.
 - **Cron Delay Tracking Engine (`scripts/record_delay.py`)**:
   - Automatically calculates startup delay against the scheduled 03:14 UTC daily cron trigger.
   - Stores all historical runs in an in-repository SQLite database (`data/delays.db`).
