@@ -1,7 +1,7 @@
 # GitHub Actions Cron Delay Tracker ⏱️📊
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Release: v1.0](https://img.shields.io/badge/Release-v1.0-emerald.svg)](https://github.com/offspring26/Start/releases/tag/v1.0)
+[![Release: v1.1](https://img.shields.io/badge/Release-v1.1-emerald.svg)](https://github.com/offspring26/Start/releases/tag/v1.1)
 [![Cron: 03:14 UTC](https://img.shields.io/badge/Cron-03%3A14%20UTC-indigo.svg)](https://github.com/)
 [![Database: SQLite](https://img.shields.io/badge/Database-SQLite%203-lightgrey.svg)](https://sqlite.org/)
 [![UI: Vite + React](https://img.shields.io/badge/Dashboard-Vite%20%2B%20React-purple.svg)](https://vitejs.dev/)
@@ -18,6 +18,7 @@ Each morning at **03:14 AM UTC**, a GitHub Actions cron job triggers a script th
 3. Exports aggregated snapshot data to JSON (`data/delays.json`).
 4. Automatically commits the updated database and data snapshot back to the repository.
 5. Builds and deploys an interactive **Vite web dashboard** with **vertical column bars** and light/dark theme support displaying:
+   - **Daily Execution Delays (Each Run)**: Interactive column chart for every individual daily cron execution in this repository with range filters (All Runs, 30-day, 14-day, 7-day) and jump controls.
    - **Daily startup delays for the last week** (vertical columns)
    - **Monthly Performance Overview** (multi-month trend comparison and day-by-day drill-downs)
    - **Average startup delay of the last years** (annual comparative trends)
@@ -39,7 +40,7 @@ Start/
 │   └── test_tracker.py          # Unit tests for calculation & database operations
 ├── frontend/                    # Vite + React + TypeScript + Tailwind CSS web dashboard
 │   ├── src/
-│   │   ├── components/          # Horizontal bar charts, metric cards, table
+│   │   ├── components/          # DailyRunsChart, ColumnBarChart, MonthlyOverview, MetricCards, DelayTable
 │   │   ├── types.ts             # TypeScript definitions
 │   │   └── App.tsx              # Main dashboard
 │   └── vite.config.ts           # Vite build config

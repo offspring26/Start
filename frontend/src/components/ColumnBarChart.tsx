@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { BarItem } from '../types';
 import { Info } from 'lucide-react';
 import { formatDuration } from '../utils/stats';
@@ -9,6 +9,8 @@ interface ColumnBarChartProps {
   items: BarItem[];
   unit?: string;
   averageValue?: number;
+  scrollContainerRef?: React.RefObject<HTMLDivElement>;
+  scrollToEndOnMount?: boolean;
 }
 
 export const ColumnBarChart: React.FC<ColumnBarChartProps> = ({
@@ -17,8 +19,24 @@ export const ColumnBarChart: React.FC<ColumnBarChartProps> = ({
   items,
   unit = 'min',
   averageValue,
+  scrollContainerRef,
+  scrollToEndOnMount = false,
 }) => {
   const [hoveredId, setHoveredId] = useState<string | number | null>(null);
+  const internalRef = useRef<HTMLDivElement>(null);
+  const activeScrollRef = scrollContainerRef || internalRef;
+
+  useEffect(() => {
+    if (scrollToEndOnMount && activeScrollRef.current) {
+      // Allow DOM layout to complete before scrolling
+      const timer = setTimeout(() => {
+        if (activeScrollRef.current) {
+          activeScrollRef.current.scrollLeft = activeScrollRef.current.scrollWidth;
+        }
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [items, scrollToEndOnMount, activeScrollRef]);
 
   if (!items || items.length === 0) {
     return (
@@ -86,7 +104,7 @@ export const ColumnBarChart: React.FC<ColumnBarChartProps> = ({
           </div>
 
           {/* Columns & Grid Area */}
-          <div className="flex-1 relative h-64 sm:h-72 overflow-x-auto pl-2 sm:pl-3 pb-8">
+          <div ref={activeScrollRef} className="flex-1 relative h-64 sm:h-72 overflow-x-auto pl-2 sm:pl-3 pb-8 scroll-smooth">
             {/* Horizontal Grid Lines */}
             <div className="absolute inset-0 right-0 pointer-events-none flex flex-col justify-between py-1">
               {gridSteps.map((fraction) => (

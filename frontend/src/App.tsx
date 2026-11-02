@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import fallbackData from './data/delays.json';
 import { DelayDataset } from './types';
 import { MetricCards } from './components/MetricCards';
+import { DailyRunsChart } from './components/DailyRunsChart';
 import { ColumnBarChart } from './components/ColumnBarChart';
 import { MonthlyOverview } from './components/MonthlyOverview';
 import { DelayTable } from './components/DelayTable';
@@ -15,6 +16,7 @@ import {
   Layers,
   CalendarRange,
   BarChart3,
+  BarChart2,
   RefreshCw,
   GitBranch,
   ShieldCheck,
@@ -24,7 +26,7 @@ import {
 
 export const App: React.FC = () => {
   const [data, setData] = useState<DelayDataset>(fallbackData as unknown as DelayDataset);
-  const [activeTab, setActiveTab] = useState<'all' | 'week' | 'month' | 'years'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'daily' | 'week' | 'month' | 'years'>('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     try {
@@ -93,7 +95,7 @@ export const App: React.FC = () => {
                   GitHub Actions Cron Delay Tracker
                 </h1>
                 <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/30">
-                  v1.0
+                  v1.1
                 </span>
                 <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 dark:bg-indigo-950 dark:text-indigo-400 dark:border-indigo-800/50">
                   03:14 UTC Daily
@@ -159,6 +161,20 @@ export const App: React.FC = () => {
               <span>All Visuals</span>
             </button>
             <button
+              onClick={() => setActiveTab('daily')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                activeTab === 'daily'
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+              }`}
+            >
+              <BarChart2 className="w-3.5 h-3.5" />
+              <span>Daily Runs</span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-700 dark:text-indigo-300">
+                {data.runs.length}
+              </span>
+            </button>
+            <button
               onClick={() => setActiveTab('week')}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 activeTab === 'week'
@@ -203,7 +219,12 @@ export const App: React.FC = () => {
 
         {/* Visualizations (Vertical Column Bar Charts & Monthly Overview) */}
         <div className="space-y-8">
-          {/* Section 1: Last Week Delays (Vertical Columns) */}
+          {/* Section 1: All Daily Runs for Repository (Vertical Columns) */}
+          {(activeTab === 'all' || activeTab === 'daily') && (
+            <DailyRunsChart runs={data.runs} />
+          )}
+
+          {/* Section 2: Last Week Delays (Vertical Columns) */}
           {(activeTab === 'all' || activeTab === 'week') && (
             <ColumnBarChart
               title="Last Week Daily Startup Delays"
@@ -214,12 +235,12 @@ export const App: React.FC = () => {
             />
           )}
 
-          {/* Section 2: Comprehensive Monthly Overview */}
+          {/* Section 3: Comprehensive Monthly Overview */}
           {(activeTab === 'all' || activeTab === 'month') && (
             <MonthlyOverview runs={data.runs} />
           )}
 
-          {/* Section 3: Average of the Last Years (Vertical Columns) */}
+          {/* Section 4: Average of the Last Years (Vertical Columns) */}
           {(activeTab === 'all' || activeTab === 'years') && (
             <ColumnBarChart
               title="Multi-Year Comparison: Average Delay of the Last Years"
@@ -248,7 +269,7 @@ export const App: React.FC = () => {
               )
             </span>
             <span className="text-slate-400 dark:text-slate-600">•</span>
-            <span className="font-mono text-slate-700 dark:text-slate-300 font-medium">v1.0</span>
+            <span className="font-mono text-slate-700 dark:text-slate-300 font-medium">v1.1</span>
           </div>
           <div>
             <span>

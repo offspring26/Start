@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-11-03
+
+### General
+- Official **v1.1** release of the GitHub Actions Cron Delay Tracker.
+- Updated version tags across dashboard header, footer, `index.html`, package manifests, and documentation.
+
+### Added
+- **Daily Runs Column Chart (`DailyRunsChart.tsx`)**:
+  - Full-fidelity vertical column bar chart displaying the scheduler startup delay for each individual daily run in this repository.
+  - Interactive range filtering presets: **All Runs** (all 55+ daily executions), **Last 30 Days**, **Last 14 Days**, and **Last 7 Days**.
+  - Dynamic navigation and sorting controls: Chronological (Oldest → Newest) vs Newest First toggle, plus instant jump buttons (`⇤ First Run`, `Latest Run ⇥`).
+  - Auto-scroll to latest run on load so users immediately see recent executions while retaining smooth horizontal scrolling across the entire repository history.
+  - Dedicated daily cohort KPI cards: Total Runs Count (with on-time percentage ≤ 15m), Cohort Average Delay, Fastest Run (Min Delay), and Peak Queue Congestion (Max Delay).
+  - New **Daily Runs** tab button with live run counter badge in the dashboard navigation bar.
+- **Analytics & Data Utilities**:
+  - Added `buildDailyRunBarItems()` and `getDailyRunsStats()` to `frontend/src/utils/stats.ts`.
+  - Added ref forwarding and `scrollToEndOnMount` support to `ColumnBarChart.tsx` for seamless horizontal navigation.
+
 ## [1.0.0] - 2026-11-02
 
 ### General

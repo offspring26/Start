@@ -38,7 +38,9 @@ Start/
 ├── frontend/                        # Vite + React + TypeScript + Tailwind CSS application
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── HorizontalBarChart.tsx # Reusable horizontal bar chart with threshold colors
+│   │   │   ├── DailyRunsChart.tsx     # Column chart for each daily run with filters & jump controls
+│   │   │   ├── ColumnBarChart.tsx     # Reusable vertical column bar chart with threshold colors
+│   │   │   ├── MonthlyOverview.tsx    # Multi-month trends and day-by-day drill-downs
 │   │   │   ├── MetricCards.tsx        # KPI cards (latest, week avg, month avg, multi-year)
 │   │   │   └── DelayTable.tsx         # Chronological execution log table with search
 │   │   ├── data/
@@ -160,6 +162,9 @@ File: `.github/workflows/cron-delay-monitor.yml`
   - Column heights scale proportionally relative to maximum value in active view.
   - Horizontal benchmark dashed line displays section and group averages.
   - Interactive hover state displays detailed scheduled time, start time, delay duration, and delta.
+- **Daily Runs Column Chart**: (`DailyRunsChart.tsx`)
+  - Dedicated column chart visualization for every individual daily cron run in the repository.
+  - Includes range filters (All, 30-day, 14-day, 7-day), chronological sorting toggle, jump buttons, and cohort KPI cards.
 - **Monthly Overview**: (`MonthlyOverview.tsx`)
   - Aggregates multi-month historical trends and provides day-by-day drill-downs for any selected month.
 - **Theme Support**:

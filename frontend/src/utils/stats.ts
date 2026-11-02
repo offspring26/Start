@@ -163,3 +163,79 @@ export function buildYearlyBarItems(summary: SummaryData): BarItem[] {
     };
   });
 }
+
+export function buildDailyRunBarItems(
+  runs: CronRun[],
+  sortOrder: 'asc' | 'desc' = 'asc'
+): BarItem[] {
+  const sorted = [...runs].sort((a, b) => {
+    const timeA = new Date(a.actual_time).getTime();
+    const timeB = new Date(b.actual_time).getTime();
+    return sortOrder === 'asc' ? timeA - timeB : timeB - timeA;
+  });
+
+  return sorted.map((run) => {
+    const actualDate = new Date(run.actual_time);
+    const scheduledDate = new Date(run.scheduled_time);
+    const monthShort = actualDate.toLocaleDateString(undefined, { month: 'short' });
+    const day = actualDate.getUTCDate();
+    const weekday = actualDate.toLocaleDateString(undefined, { weekday: 'short' });
+    const runNum = run.github_run_number ? `#${run.github_run_number}` : `ID ${run.id}`;
+
+    return {
+      id: run.id,
+      label: `${monthShort} ${day}`,
+      subLabel: `${weekday} ${actualDate.toISOString().substring(11, 16)} UTC`,
+      value: run.delay_minutes,
+      formattedValue: `${run.delay_minutes.toFixed(1)}m (${formatDuration(run.delay_minutes)})`,
+      timestamp: run.actual_time,
+      extraInfo: `Run ${runNum} (${actualDate.toISOString().substring(0, 10)}) | Scheduled: ${scheduledDate.toISOString().substring(11, 19)} UTC | Actual: ${actualDate.toISOString().substring(11, 19)} UTC | Delay: ${formatDuration(run.delay_minutes)} | Trigger: ${run.trigger_type}`,
+    };
+  });
+}
+
+export interface DailyRunsStatsResult {
+  count: number;
+  avg: number;
+  min: number;
+  max: number;
+  fastestRun: CronRun | null;
+  slowestRun: CronRun | null;
+  onScheduleCount: number;
+  onSchedulePercent: number;
+}
+
+export function getDailyRunsStats(runs: CronRun[]): DailyRunsStatsResult {
+  if (runs.length === 0) {
+    return {
+      count: 0,
+      avg: 0,
+      min: 0,
+      max: 0,
+      fastestRun: null,
+      slowestRun: null,
+      onScheduleCount: 0,
+      onSchedulePercent: 0,
+    };
+  }
+
+  const delays = runs.map((r) => r.delay_minutes);
+  const avg = delays.reduce((acc, d) => acc + d, 0) / delays.length;
+  const min = Math.min(...delays);
+  const max = Math.max(...delays);
+  const fastestRun = runs.find((r) => r.delay_minutes === min) || null;
+  const slowestRun = runs.find((r) => r.delay_minutes === max) || null;
+  const onScheduleCount = runs.filter((r) => r.delay_minutes <= 15).length;
+  const onSchedulePercent = Math.round((onScheduleCount / runs.length) * 100);
+
+  return {
+    count: runs.length,
+    avg: Math.round(avg * 100) / 100,
+    min: Math.round(min * 100) / 100,
+    max: Math.round(max * 100) / 100,
+    fastestRun,
+    slowestRun,
+    onScheduleCount,
+    onSchedulePercent,
+  };
+}
